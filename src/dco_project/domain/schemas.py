@@ -1,3 +1,6 @@
+"""Domain schemas used by pricing pipeline and services."""
+# pylint: disable=too-many-instance-attributes
+
 from __future__ import annotations
 
 from dataclasses import dataclass

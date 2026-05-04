@@ -1,3 +1,5 @@
+"""Mock data providers for sales plan and macro context."""
+
 from __future__ import annotations
 
 from dco_project.config.logging import get_logger

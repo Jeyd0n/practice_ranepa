@@ -1,3 +1,5 @@
+"""Core mathematical engine for dynamic pricing."""
+
 from __future__ import annotations
 
 from dco_project.config.logging import get_logger
@@ -35,7 +37,7 @@ def _clip(value: float, low: float, high: float) -> float:
     return max(low, min(value, high))
 
 
-def calculate_price(model_input: ModelInput) -> PricingResult:
+def calculate_price(model_input: ModelInput) -> PricingResult:  # pylint: disable=too-many-locals
     """Calculate recommended apartment price using simple math factors.
 
     Parameters
@@ -81,7 +83,11 @@ def calculate_price(model_input: ModelInput) -> PricingResult:
         + seasonality_effect_pct
     )
 
-    bounded_change_pct = _clip(raw_change_pct, -MAX_ABS_MONTHLY_CHANGE, MAX_ABS_MONTHLY_CHANGE)
+    bounded_change_pct = _clip(
+        raw_change_pct,
+        -MAX_ABS_MONTHLY_CHANGE,
+        MAX_ABS_MONTHLY_CHANGE,
+    )
     recommended_price_m2 = base_price_m2 * (1 + bounded_change_pct)
     recommended_total_price = recommended_price_m2 * model_input.area_m2
 

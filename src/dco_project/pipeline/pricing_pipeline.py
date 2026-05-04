@@ -1,3 +1,5 @@
+"""Pipeline orchestration for project pricing."""
+
 from __future__ import annotations
 
 from dco_project.config.logging import get_logger
@@ -30,7 +32,11 @@ def run_pricing_pipeline(request: PricingRequest) -> PipelineOutput:
     PipelineOutput
         Final object containing normalized input, result and metadata.
     """
-    logger.info("Pipeline started for project_id=%s month=%s", request.project_id, request.month)
+    logger.info(
+        "Pipeline started for project_id=%s month=%s",
+        request.project_id,
+        request.month,
+    )
     mock_sales = fetch_mock_project_sales(request.project_id)
     mock_plan = fetch_mock_sales_plan(request.project_id, request.month)
     mock_macro = fetch_mock_macro_context(request.month)
@@ -46,7 +52,11 @@ def run_pricing_pipeline(request: PricingRequest) -> PipelineOutput:
         fact_sales_month=request.fact_sales_month
         if request.fact_sales_month is not None
         else mock_sales["fact_sales_month"],
-        unsold_share=request.unsold_share if request.unsold_share is not None else mock_sales["unsold_share"],
+        unsold_share=(
+            request.unsold_share
+            if request.unsold_share is not None
+            else mock_sales["unsold_share"]
+        ),
         mortgage_rate=request.mortgage_rate
         if request.mortgage_rate is not None
         else mock_macro["mortgage_rate"],
